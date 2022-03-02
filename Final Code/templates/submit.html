@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Diabetes Prediction</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
+      crossorigin="anonymous"
+    />
+
+    <style type="text/css">
+      .btn {
+        margin-top: 20px;
+      }
+      h1,
+      .texte {
+        color: white;
+      }
+      @media only screen and (min-width: 1000px) {
+        body {
+          background-image: url("../static/img-1.jpg");
+          background-size: 100%;
+          background-repeat: no-repeat;
+          margin: 0px;
+          padding: 0px;
+          width: 100%;
+          height: 100%;
+          max-width: 100%;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div
+      class="container"
+      style="
+        margin-top: 156px;
+        padding: 20px;
+      "
+    >
+      <div class="row">
+        <div class="col-12"  style="background-color:0">
+          <h1 style="text-align: center; color: white;">
+            Predicting Diabetes With Risk Factors
+          </h1>
+        </div>
+        <form action="{{ url_for('predict')}}" method="post">
+          <div class="row" >
+            <div class="form-group col-lg-3 col-sm-12">
+              <label class="col-12 col-form-label texte" style="color:white; font-weight: bold;">Pregnancies</label>
+              <div class="col-12">
+                <input
+                  class="form-control"
+                  name="Pregnancies"
+                  placeholder="No.of Pregnancies Eg(0-20)"
+                  min="0" max="20"
+                  required="required"
+                  type="number"
+                />
+              </div>
+            </div>
+
+            <div class="form-group col-lg-3 col-sm-12">
+              <label class="col-12 col-form-label texte" style="color:white; font-weight: bold;">Glucose</label>
+              <div class="col-12">
+                <input
+                  class="form-control"
+                  name="Glucose"
+                  required="required"
+                  placeholder="Enter Glucose level Eg(140)"
+                  min="70" max="200"
+                  type="number"
+                />
+              </div>
+            </div>
+
+            <div class="form-group col-lg-3 col-sm-12">
+              <label class="col-12 col-form-label texte" style="color:white; font-weight: bold;">BloodPressure</label>
+              <div class="col-12">
+                <input
+                  class="form-control"
+                  name="BloodPressure"
+                  required="required"
+                  placeholder="Enter Blood Pressure Eg(80)"
+                  min="50" max="200"
+                  type="number"
+                />
+              </div>
+            </div>
+
+            <div class="form-group col-lg-3 col-sm-12">
+              <label class="col-12 col-form-label texte" style="color:white; font-weight: bold;">SkinThickness</label>
+              <div class="col-12">
+                <input
+                  class="form-control"
+                  name="SkinThickness"
+                  required="required"
+                  placeholder="Enter Skin Thickness Eg(1-4)"
+                  min="1" max="5"
+                  type="number"
+                />
+              </div>
+            </div>
+
+            <div class="form-group col-lg-3 col-sm-12">
+              <label class="col-12 col-form-label texte" style="color:white; font-weight: bold;">Insulin</label>
+              <div class="col-12">
+                <input
+                  class="form-control"
+                  name="Insulin"
+                  required="required"
+                  placeholder="Enter Insulin level Eg(8)"
+                  min="3" max="280"
+                  type="number"
+                  step="any"
+                />
+              </div>
+            </div>
+
+            <div class="form-group col-lg-3 col-sm-12" style="color:white; font-weight: bold;">
+              <label class="col-12 col-form-label texte">BMI</label>
+              <div class="col-12">
+                <input
+                  class="form-control"
+                  name="BMI"
+                  required="required"
+                  placeholder="Enter BMI level Eg(18)"
+                  min="18" max="40"
+                  type="number"
+                />
+              </div>
+            </div>
+
+            <div class="form-group col-lg-3 col-sm-12" style="color:white; font-weight: bold;">
+              <label class="col-12 col-form-label texte">Family History</label>
+              <div class="col-12">
+                <input
+                  class="form-control"
+                  name="Family History"
+                  required="required"
+                  placeholder="Enter Family History Eg(0 or 1)"
+                  min="0" max="1"
+                  type="number"
+                />
+              </div>
+            </div>
+
+            <div class="form-group col-lg-3 col-sm-12">
+              <label class="col-12 col-form-label texte" style="color:white; font-weight: bold;">Age</label>
+              <div class="col-12">
+                <input
+                  class="form-control"
+                  name="Age"
+                  required="required"
+                  placeholder="Enter Age Eg(1-100)"
+                  min="1" max="100"
+                  type="number"
+                />
+              </div>
+            </div>
+            <div class="col-lg-12" style="text-align: center;">
+              <button type="submit" class="btn btn-warning text-right">
+                Submit
+              </button>
+            </div>
+        </div>
+      </form>
+    </div>
+    </div>
+
+    <div style="margin-top: 20px">
+      <center>
+        <h1 style="color: black">{{ prediction_text }}</h1>
+      </center>
+
+    </div>
+    {% if prediction_text == 'Patient has Diabetes' %}
+    <center><h1 style="color: black">The Risk Factor of Diabetes is due to Higher level of</h1></center></center>
+    <div class="col-7 mx-auto mb-5">
+    <ul class="list-group list-group-flush">
+        {% if glucose>=140 %}
+        <li class="list-group-item">Glucose</li>
+        {% endif %} {% if skinthickness>=20 %}
+        <li class="list-group-item">Skin Thickness</li>
+        {% endif %} {% if insulin>=8.8 %}
+        <li class="list-group-item">Insulin</li>
+        {% endif %} {% if bmi>=25 %}
+        <li class="list-group-item">BMI</li>
+        {% endif %}
+    </ul>
+  </div>
+    <div class="col-7 mx-auto">
+    <table class="table table-dark table-responsive">
+      <thead>
+        <tr>
+          <th scope="col">Parameter</th>
+          <th scope="col">Threshold Value</th>
+          <th scope="col">Actual Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% if glucose>=140 %}
+        <tr>
+          <td>Glucose</td>
+          <td>140</td>
+          <td>{{glucose}}</td>
+        </tr>
+        {% endif %} {% if bloodpressure>=80 %}
+        <tr>
+          <td>Blood Pressure</td>
+          <td>80</td>
+          <td>{{bloodpressure}}</td>
+        </tr>
+        {% endif %} {% if skinthickness>=20 %}
+        <tr>
+          <td>Skin Thickness</td>
+          <td>20</td>
+          <td>{{skinthickness}}</td>
+        </tr>
+        {% endif %} {% if insulin>=8.8 %}
+        <tr>
+          <td>Insulin</td>
+          <td>8.8</td>
+          <td>{{insulin}}</td>
+        </tr>
+        {% endif %} {% if bmi>=25 %}
+        <tr>
+          <td>BMI</td>
+          <td>25</td>
+          <td>{{bmi}}</td>
+        </tr>
+        {% endif %} {% if diabetespedigreefunction>=0.5 %}
+        <tr>
+          <td>Family History</td>
+          <td>0.5</td>
+          <td>{{diabetespedigreefunction}}</td>
+        </tr>
+        {% endif %} {% if age>=35 %}
+        <tr>
+          <td>Age</td>
+          <td>35</td>
+          <td>{{age}}</td>
+        </tr>
+        {% endif %}
+      </tbody>
+    </table>
+  </div>
+    {% endif %}
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
